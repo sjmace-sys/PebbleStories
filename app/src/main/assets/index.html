@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#f7f3ee">
+<title>Pebble Stories</title>
+<style>
+:root{--cream:#f7f3ee;--paper:#fcfbf7;--ink:#2b2926;--muted:#817b73;--line:#ddd6cc;--oak:#b7a893;--hand:"Segoe Print","Bradley Hand","Comic Sans MS",cursive}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}html,body{margin:0;min-height:100%;background:#dcd6ce;color:var(--ink);font-family:Arial,Helvetica,sans-serif}button{font:inherit;color:inherit}
+.app{width:min(100vw,520px);min-height:100dvh;margin:auto;background:var(--cream);overflow:hidden;position:relative}
+.header{height:88px;display:grid;grid-template-columns:48px 1fr 48px;align-items:center;padding:10px 14px;background:linear-gradient(#faf8f4,#f5f0e9);border-bottom:1px solid #e8e0d5;position:relative;z-index:30}
+.iconBtn{width:44px;height:44px;border:0;background:#fff;border-radius:14px;box-shadow:0 3px 12px #0000000f;font-size:22px}
+.brand{text-align:center;line-height:1}.brandName{font-family:var(--hand);font-size:33px;font-weight:400;position:relative;display:inline-block}.brandName:after{content:"";position:absolute;left:3px;right:3px;height:14px;bottom:-9px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='190' height='18' viewBox='0 0 190 18'%3E%3Cpath d='M3 12 C36 5 62 15 94 10 S147 6 187 12' fill='none' stroke='%23302e2a' stroke-width='2.2' stroke-linecap='round'/%3E%3Cpath d='M31 10 C30 4 38 3 39 10' fill='none' stroke='%23302e2a' stroke-width='1.8'/%3E%3Cellipse cx='40' cy='5' rx='4' ry='2.7' fill='%23302e2a'/%3E%3Cpath d='M149 10 C148 4 157 3 158 10' fill='none' stroke='%23302e2a' stroke-width='1.8'/%3E%3Cellipse cx='159' cy='5' rx='4' ry='2.7' fill='%23302e2a'/%3E%3C/svg%3E") center/100% 100% no-repeat}.brandSmall{font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:#817b72;margin-top:13px}
+.menu{position:absolute;top:72px;left:14px;width:232px;background:#fff;border:1px solid #e5ddd2;border-radius:18px;box-shadow:0 16px 42px #0003;padding:8px;display:none;z-index:60}.menu.open{display:block}.menu button{width:100%;border:0;background:transparent;text-align:left;padding:13px 12px;border-radius:12px;font-size:16px;font-weight:600;color:#292724}.menu button:active{background:#f4f0ea}
+.main{padding:14px}.frame{background:#e4ddd3;border:10px solid var(--oak);padding:12px;box-shadow:0 12px 30px #3c34281c;transition:.2s}.frame.white{border-color:#fbfaf7;background:#f0ede7}.frame.dark{border-color:#5c534a;background:#c8c0b6}.mount{background:#f6f3ed;padding:14px;box-shadow:inset 0 0 6px #00000012}.board{position:relative;aspect-ratio:1;background:linear-gradient(112deg,#fffefa,#f8f6f1 58%,#fffefa);box-shadow:inset 0 0 0 1px #e9e4db;overflow:hidden;touch-action:none}.board:after{content:"";position:absolute;inset:0;pointer-events:none;opacity:.08;background:radial-gradient(#777 .3px,transparent .45px);background-size:5px 5px}
+.item{position:absolute;transform-origin:center;display:flex;align-items:center;justify-content:center;touch-action:none;user-select:none}.item img{width:100%;height:100%;object-fit:contain;pointer-events:none;filter:drop-shadow(0 2px 2px #0003)}.item.sel{outline:2px dashed #665d5180;outline-offset:4px}.textItem{font-family:var(--hand);white-space:nowrap;font-size:28px;color:#2c2925;text-shadow:0 1px #fff}
+.tools{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;padding:12px 0 2px}.tools button{min-height:59px;border:1px solid var(--line);background:#fff;border-radius:15px;padding:7px 3px;font-size:10px}.tools span{display:block;font-size:20px;margin-bottom:3px}
+.actions{display:flex;gap:8px;padding-top:10px}.pill{border:1px solid var(--line);background:#fff;border-radius:999px;padding:11px 14px;font-size:13px}.pill.share{background:#34322f;color:white;border-color:#34322f;margin-left:auto}
+.tray{margin-top:2px;background:#fbfaf7;border-radius:25px 25px 0 0;box-shadow:0 -4px 18px #00000013;padding:10px 10px calc(15px + env(safe-area-inset-bottom));position:sticky;bottom:0;z-index:20}.tabs,.assets{display:flex;overflow:auto;scrollbar-width:none}.tabs::-webkit-scrollbar,.assets::-webkit-scrollbar{display:none}.tabs{gap:17px;padding:0 5px 8px}.tab{border:0;background:none;font-family:var(--hand);font-size:15px;padding:7px 0;white-space:nowrap;border-bottom:2px solid transparent}.tab.on{border-color:#2e2b27}.hint{font-size:11px;color:var(--muted);padding:0 5px 7px}.assets{gap:9px;padding:2px}.asset{min-width:78px;width:78px;height:78px;border:1px solid #e6ded3;background:#fff;border-radius:17px;display:flex;align-items:center;justify-content:center;padding:7px}.asset img{max-width:100%;max-height:100%;object-fit:contain;filter:drop-shadow(0 2px 2px #0002)}.asset .word{font-family:var(--hand);font-size:16px;line-height:1.1;text-align:center}
+.toast{position:fixed;left:50%;bottom:116px;transform:translateX(-50%) translateY(15px);background:#272522;color:#fff;padding:10px 14px;border-radius:99px;font-size:12px;opacity:0;transition:.2s;z-index:99}.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}#shareCanvas{display:none}
+</style>
+</head>
+<body>
+<div class="app">
+<header class="header">
+<button class="iconBtn" id="menuBtn">☰</button>
+<div class="brand"><div class="brandName">Pebble Stories</div><div class="brandSmall">create your story</div></div>
+<button class="iconBtn" id="resetBtn">↺</button>
+<div class="menu" id="menu"><button id="newBtn">New artwork</button><button id="loadBtn">Load saved artwork</button><button id="frameBtn">Change frame</button><button id="aboutBtn">About Pebble Stories</button></div>
+</header>
+<main class="main">
+<div class="frame" id="frame"><div class="mount"><div class="board" id="board"></div></div></div>
+<div class="tools">
+<button data-a="rotate"><span>↻</span>Rotate</button><button data-a="bigger"><span>＋</span>Bigger</button><button data-a="smaller"><span>－</span>Smaller</button><button data-a="copy"><span>⧉</span>Copy</button><button data-a="front"><span>⬆</span>Front</button><button data-a="delete"><span>⌫</span>Delete</button>
+</div>
+<div class="actions"><button class="pill" id="suggestBtn">✦ Suggest layout</button><button class="pill" id="saveBtn">Save</button><button class="pill share" id="shareBtn">Share</button></div>
+</main>
+<section class="tray"><div class="tabs" id="tabs"></div><div class="hint">Tap to add • drag to position • select an item to edit it</div><div class="assets" id="assets"></div></section>
+</div>
+<div class="toast" id="toast"></div><canvas id="shareCanvas" width="1400" height="1700"></canvas>
+<script>
+const $=s=>document.querySelector(s),board=$('#board'),frame=$('#frame'),menu=$('#menu'),toast=$('#toast'),canvas=$('#shareCanvas');
+let state={items:[],selected:null,z:1,frame:0,tab:'Stones'},drag=null;
+const cache=new Map();
+
+function data(svg){return 'data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svg)}
+function stone(seed,base,light,dark,shape='oval'){
+ const paths={
+  oval:"M22 54C18 31 30 10 53 8c27-2 44 17 43 45-1 27-15 43-40 44-24 0-31-18-34-43Z",
+  tall:"M35 93C19 77 18 53 25 28 31 8 49 3 65 11c17 9 25 35 18 58-7 25-30 40-48 24Z",
+  round:"M17 53C14 28 32 10 55 10c25 0 43 19 41 44-2 25-19 42-43 42-25 0-33-19-36-43Z",
+  flat:"M8 58C10 35 27 23 52 20c29-3 48 8 49 28 1 20-19 34-50 36-29 2-45-7-43-26Z",
+  wedge:"M16 82C22 50 34 22 58 10c13-6 29 7 32 22 5 24-8 50-24 62-18 13-54 9-50-12Z"
+ };
+ return data(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 110"><defs><radialGradient id="g" cx="30%" cy="23%" r="78%"><stop stop-color="${light}"/><stop offset=".58" stop-color="${base}"/><stop offset="1" stop-color="${dark}"/></radialGradient><filter id="f"><feTurbulence type="fractalNoise" baseFrequency=".045" numOctaves="3" seed="${seed}" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="3.6"/><feBlend in="SourceGraphic" in2="n" mode="soft-light"/></filter></defs><path d="${paths[shape]}" fill="url(%23g)" filter="url(%23f)"/><ellipse cx="42" cy="32" rx="20" ry="13" fill="%23fff" opacity=".08"/></svg>`)
+}
+function wood(seed=4,tone='#8b6544'){
+ return data(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 80"><defs><linearGradient id="w" x1="0" y1="0" x2="1" y2="1"><stop stop-color="%23c3a17b"/><stop offset=".35" stop-color="${tone}"/><stop offset=".72" stop-color="%23705339"/><stop offset="1" stop-color="%23b58a61"/></linearGradient><filter id="f"><feTurbulence baseFrequency=".03 .15" numOctaves="2" seed="${seed}" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="5"/><feBlend in="SourceGraphic" in2="n" mode="multiply"/></filter></defs><path d="M5 47C29 33 49 46 70 40c35-10 59-28 92-20 27 6 43 21 73 9l-6 26c-30 12-56-1-78 9-29 13-55 0-84 5-24 4-43 8-64-4Z" fill="url(%23w)" filter="url(%23f)"/><path d="M70 44c40-10 73 2 118-8" stroke="%23614835" stroke-width="2" opacity=".45" fill="none"/></svg>`)
+}
+function twig(seed=2){
+ return data(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 85"><defs><filter id="f"><feTurbulence baseFrequency=".06" numOctaves="2" seed="${seed}" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="2"/></filter></defs><path d="M5 62C48 53 78 44 111 43c38-2 66 6 104-19M60 49l-15-25M105 42l14-30M151 45l21-24M184 37l7-21" stroke="%236f553e" stroke-width="6" stroke-linecap="round" fill="none" filter="url(%23f)"/></svg>`)
+}
+function glass(seed,color='#65a17e'){
+ return data(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><radialGradient id="g" cx="35%" cy="28%" r="75%"><stop stop-color="%23fff" stop-opacity=".56"/><stop offset=".25" stop-color="${color}" stop-opacity=".58"/><stop offset="1" stop-color="${color}" stop-opacity=".9"/></radialGradient><filter id="f"><feTurbulence baseFrequency=".05" numOctaves="2" seed="${seed}" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="4"/></filter></defs><path d="M16 63C13 41 30 17 53 12c19-4 34 11 32 31-3 26-20 43-45 45-14 1-22-10-24-25Z" fill="url(%23g)" filter="url(%23f)" stroke="%23ffffff" stroke-opacity=".35" stroke-width="2"/></svg>`)
+}
+function moon(){return data(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><radialGradient id="g" cx="32%" cy="28%"><stop stop-color="%23fffdf4"/><stop offset=".7" stop-color="%23d8d4c7"/><stop offset="1" stop-color="%23aaa69a"/></radialGradient><filter id="f"><feTurbulence baseFrequency=".06" numOctaves="3" seed="7" result="n"/><feBlend in="SourceGraphic" in2="n" mode="soft-light"/></filter></defs><circle cx="50" cy="50" r="37" fill="url(%23g)" filter="url(%23f)"/></svg>`)}
+
+const stones=[
+ stone(1,'#777872','#b8b6ad','#4e504b','tall'),stone(2,'#99958c','#cbc6ba','#6f6c66','oval'),stone(3,'#5f615d','#9a9b94','#393b38','round'),stone(4,'#a59c8b','#d4ccbb','#716b61','flat'),
+ stone(5,'#7d7b76','#b1aea6','#565550','wedge'),stone(6,'#494b48','#7c7f79','#292b29','tall'),stone(7,'#aaa89f','#d1cec5','#77766e','round'),stone(8,'#6c6b66','#a5a39b','#474742','flat'),
+ stone(9,'#8d8f88','#c5c5bd','#5f615c','oval'),stone(10,'#b0a998','#ded5c3','#817b6e','wedge'),stone(11,'#666966','#9c9f9a','#3c3f3d','round'),stone(12,'#8a8780','#bbb7ae','#5e5b56','tall')
+];
+const woods=[wood(2,'#916a49'),wood(5,'#73543c'),wood(8,'#a17b58'),twig(2),twig(6),twig(11)];
+const glasses=[glass(1,'#5f9d78'),glass(2,'#7cb696'),glass(3,'#b4d0bd'),glass(4,'#487b66'),glass(5,'#8ab79f'),glass(6,'#d8ddd4'),glass(7,'#65977a'),glass(8,'#9ebca8')];
+const catalog={
+ Stones:stones.map((src,i)=>({kind:'image',src,w:[58,64,54,78,58,48,55,76,61,57,54,49][i],h:[82,70,58,48,70,86,58,46,74,70,57,88][i]})),
+ Driftwood:woods.map((src,i)=>({kind:'image',src,w:i<3?175:155,h:i<3?55:58})),
+ 'Sea Glass':glasses.map((src,i)=>({kind:'image',src,w:48+(i%3)*6,h:48+(i%2)*8})),
+ Extras:[{kind:'image',src:moon(),w:52,h:52},{kind:'text',text:'⌒',w:34,h:28},{kind:'text',text:'⌒  ⌒',w:68,h:28},{kind:'text',text:'✿',w:34,h:34},{kind:'text',text:'❦',w:38,h:34}],
+ Text:[{kind:'prompt',label:'Add text'},{kind:'preset',text:'cariad',label:'cariad'},{kind:'preset',text:'our happy place',label:'our happy place'},{kind:'preset',text:'Beach huts by the sea',label:'beach huts'}],
+ Frames:[{kind:'frame',value:0,label:'Oak'},{kind:'frame',value:1,label:'White'},{kind:'frame',value:2,label:'Dark'}]
+};
+const tabs=Object.keys(catalog);
+
+function say(t){toast.textContent=t;toast.classList.add('show');clearTimeout(say.t);say.t=setTimeout(()=>toast.classList.remove('show'),1400)}
+function id(){return'i'+Date.now().toString(36)+Math.random().toString(36).slice(2,5)}
+function applyFrame(){frame.className='frame '+(state.frame===1?'white':state.frame===2?'dark':'')}
+function add(def,x=50,y=52){
+ if(def.kind==='frame'){state.frame=def.value;applyFrame();say(def.label+' frame');return}
+ if(def.kind==='prompt'){let t=prompt('What should the artwork say?','cariad');if(!t)return;def={kind:'text',text:t,w:150,h:38}}
+ if(def.kind==='preset')def={kind:'text',text:def.text,w:180,h:38}
+ let o={id:id(),kind:def.kind==='text'?'text':'image',src:def.src||'',text:def.text||'',x,y,w:def.w||60,h:def.h||60,r:0,z:++state.z};
+ state.items.push(o);state.selected=o.id;render()
+}
+function render(){
+ board.innerHTML='';
+ [...state.items].sort((a,b)=>a.z-b.z).forEach(o=>{
+  let e=document.createElement('div');e.className='item'+(o.id===state.selected?' sel':'')+(o.kind==='text'?' textItem':'');e.dataset.id=o.id;
+  Object.assign(e.style,{left:o.x+'%',top:o.y+'%',width:o.w+'px',height:o.h+'px',zIndex:o.z,transform:`translate(-50%,-50%) rotate(${o.r}deg)`});
+  if(o.kind==='image'){let im=document.createElement('img');im.src=o.src;e.appendChild(im)}else e.textContent=o.text;
+  e.onpointerdown=start;board.appendChild(e)
+ })
+}
+function start(ev){ev.preventDefault();ev.stopPropagation();let o=state.items.find(x=>x.id===ev.currentTarget.dataset.id);state.selected=o.id;render();let r=board.getBoundingClientRect();state.drag={id:o.id,dx:ev.clientX-(r.left+r.width*o.x/100),dy:ev.clientY-(r.top+r.height*o.y/100),pid:ev.pointerId}}
+board.onpointermove=ev=>{let d=state.drag;if(!d)return;let o=state.items.find(x=>x.id===d.id),r=board.getBoundingClientRect();o.x=Math.max(0,Math.min(100,(ev.clientX-d.dx-r.left)/r.width*100));o.y=Math.max(0,Math.min(100,(ev.clientY-d.dy-r.top)/r.height*100));let e=[...board.children].find(n=>n.dataset.id===o.id);if(e){e.style.left=o.x+'%';e.style.top=o.y+'%'}}
+board.onpointerup=board.onpointercancel=()=>state.drag=null;board.onclick=ev=>{if(ev.target===board){state.selected=null;render()}}
+function tool(a){let o=state.items.find(x=>x.id===state.selected);if(!o)return say('Tap an item first');if(a==='rotate')o.r-=15;if(a==='bigger'){o.w*=1.12;o.h*=1.12}if(a==='smaller'){o.w*=.89;o.h*=.89}if(a==='copy'){let n={...o,id:id(),x:Math.min(94,o.x+7),y:Math.min(94,o.y+6),z:++state.z};state.items.push(n);state.selected=n.id}if(a==='front')o.z=++state.z;if(a==='delete'){state.items=state.items.filter(x=>x.id!==o.id);state.selected=null}render()}
+document.querySelectorAll('.tools button').forEach(b=>b.onclick=()=>tool(b.dataset.a));
+function drawTabs(){let t=$('#tabs');t.innerHTML='';tabs.forEach(n=>{let b=document.createElement('button');b.className='tab'+(state.tab===n?' on':'');b.textContent=n;b.onclick=()=>{state.tab=n;drawTabs();drawAssets()};t.appendChild(b)})}
+function drawAssets(){let a=$('#assets');a.innerHTML='';catalog[state.tab].forEach(d=>{let b=document.createElement('button');b.className='asset';if(d.kind==='image'){let im=document.createElement('img');im.src=d.src;b.appendChild(im)}else{let s=document.createElement('div');s.className='word';s.textContent=d.label||d.text;b.appendChild(s)}b.onclick=()=>add(d);a.appendChild(b)})}
+function suggest(){state.items=[];state.z=1;state.frame=0;applyFrame();add(catalog.Driftwood[0],50,68);add(catalog.Stones[0],44,54);add(catalog.Stones[2],44,40);add(catalog.Stones[1],58,57);add(catalog.Stones[6],58,44);add(catalog['Sea Glass'][1],20,66);add(catalog['Sea Glass'][3],83,66);add(catalog.Extras[0],73,22);add({kind:'preset',text:'cariad'},28,83);state.selected=null;render();say('Starting layout added')}
+function save(){localStorage.setItem('ps-v2',JSON.stringify({...state,drag:null}));say('Artwork saved')}
+function load(){let r=localStorage.getItem('ps-v2');if(!r)return say('No saved artwork yet');Object.assign(state,JSON.parse(r));applyFrame();drawTabs();drawAssets();render();menu.classList.remove('open');say('Artwork loaded')}
+function rr(c,x,y,w,h,r){c.beginPath();c.moveTo(x+r,y);c.lineTo(x+w-r,y);c.quadraticCurveTo(x+w,y,x+w,y+r);c.lineTo(x+w,y+h-r);c.quadraticCurveTo(x+w,y+h,x+w-r,y+h);c.lineTo(x+r,y+h);c.quadraticCurveTo(x,y+h,x,y+h-r);c.lineTo(x,y+r);c.quadraticCurveTo(x,y,x+r,y);c.closePath()}
+async function loadImg(src){if(cache.has(src))return cache.get(src);let im=new Image();im.src=src;await new Promise(res=>{im.onload=res;im.onerror=res});cache.set(src,im);return im}
+async function share(){
+ say('Preparing picture…');let c=canvas.getContext('2d'),W=canvas.width,H=canvas.height;c.clearRect(0,0,W,H);c.fillStyle='#f3eee7';c.fillRect(0,0,W,H);
+ let O={x:105,y:85,w:1190,h:1190},bc=state.frame===2?'#62574d':state.frame===1?'#fbfaf7':'#b6a692',mc=state.frame===2?'#c7beb4':state.frame===1?'#efede8':'#e7dfd5';
+ c.fillStyle=bc;c.fillRect(O.x,O.y,O.w,O.h);c.fillStyle=mc;c.fillRect(O.x+25,O.y+25,O.w-50,O.h-50);c.fillStyle='#f6f2eb';c.fillRect(O.x+75,O.y+75,O.w-150,O.h-150);
+ let B={x:O.x+98,y:O.y+98,w:O.w-196,h:O.h-196};c.fillStyle='#fcfbf7';c.fillRect(B.x,B.y,B.w,B.h);
+ for(const o of [...state.items].sort((a,b)=>a.z-b.z)){let x=B.x+B.w*o.x/100,y=B.y+B.h*o.y/100;c.save();c.translate(x,y);c.rotate(o.r*Math.PI/180);if(o.kind==='image'){let im=await loadImg(o.src);try{c.drawImage(im,-o.w/2,-o.h/2,o.w,o.h)}catch(e){}}else{c.font='42px cursive';c.textAlign='center';c.textBaseline='middle';c.fillStyle='#292724';c.fillText(o.text,0,0)}c.restore()}
+ c.fillStyle='#292724';c.textAlign='left';c.font='28px Arial';c.fillText('Made with',145,1450);c.font='58px cursive';c.fillText('Pebble Stories',145,1514);
+ let x=820,y=1400,w=430,h=112;c.fillStyle='#151515';rr(c,x,y,w,h,18);c.fill();c.fillStyle='#fff';c.font='17px Arial';c.fillText('GET IT ON',930,1440);c.font='34px Arial';c.fillText('Play Store',930,1485);
+ c.save();c.translate(852,1427);c.fillStyle='#32d1ee';c.beginPath();c.moveTo(0,0);c.lineTo(62,30);c.lineTo(0,61);c.closePath();c.fill();c.fillStyle='#55cc72';c.beginPath();c.moveTo(0,0);c.lineTo(36,19);c.lineTo(15,31);c.closePath();c.fill();c.fillStyle='#ffd057';c.beginPath();c.moveTo(15,31);c.lineTo(36,19);c.lineTo(62,30);c.lineTo(36,42);c.closePath();c.fill();c.fillStyle='#f05f68';c.beginPath();c.moveTo(0,61);c.lineTo(36,42);c.lineTo(15,31);c.closePath();c.fill();c.restore();
+ let url=canvas.toDataURL('image/png');if(window.Android&&Android.shareImage)Android.shareImage(url);else{let a=document.createElement('a');a.href=url;a.download='pebble-stories.png';a.click()}
+}
+$('#menuBtn').onclick=e=>{e.stopPropagation();menu.classList.toggle('open')};document.addEventListener('click',e=>{if(!menu.contains(e.target)&&e.target!==$('#menuBtn'))menu.classList.remove('open')});
+$('#newBtn').onclick=$('#resetBtn').onclick=()=>{if(confirm('Start a fresh artwork?')){state.items=[];state.selected=null;render();menu.classList.remove('open')}};$('#loadBtn').onclick=load;$('#frameBtn').onclick=()=>{state.frame=(state.frame+1)%3;applyFrame();menu.classList.remove('open')};$('#aboutBtn').onclick=()=>{menu.classList.remove('open');alert('Pebble Stories\nCreate simple pebble-art pictures on your phone.')};$('#suggestBtn').onclick=suggest;$('#saveBtn').onclick=save;$('#shareBtn').onclick=share;
+applyFrame();drawTabs();drawAssets();suggest();
+</script>
+</body></html>
